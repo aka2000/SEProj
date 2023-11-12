@@ -1,65 +1,90 @@
-// ignore_for_file: prefer_const_constructors
+import 'package:ewallet/widgets/home.dart';
 import 'package:ewallet/widgets/signup.dart';
-
-import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyWidget2 extends StatelessWidget {
-   MyWidget2({Key? key}) : super(key: key);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  String? _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // app bar
-        appBar: AppBar(
-          title: Text("E-Wallet"),
-          backgroundColor: Colors.deepPurple,
-        ),
+      appBar: AppBar(
+        title: Text("E-Wallet"),
+        backgroundColor: Colors.deepPurple,
+      ),
 
-        body: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "E-mail"
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: "E-mail",
                 ),
-                TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Password"
-                  ),
+              ),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: "Password",
                 ),
-                SizedBox(
-                  height: 20,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(Size(double.infinity, 40)),
                 ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size(double.infinity,40))
-                  ),
-                  onPressed: () {}, child: Text("Sign In")
-                  ),
-                  SizedBox(
-                  height: 10,
-                ),
-                //TextButton(onPressed: ()  {}, child: Text("Register"))
-                TextButton(
-                            onPressed: () {
-                                          Navigator.push(
-                                                        context,MaterialPageRoute(builder: (context) => MyWidget4()), // Navigate to the signup screen
-                                                         );
-                                          },child: Text("Register"),
-                            ),
-
-              ],
-            ),
+                onPressed: () async {
+                  try {
+                    final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+                      email: usernameController.text,
+                      password: passwordController.text,
+                    );
+                    // Navigate to the home page if the user was successfully signed in.
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyWidgetHome()),
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    // Show an error message to the user if the sign in failed.
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.message ?? '')),
+                    );
+                  }
+                },
+                child: Text("Sign In"),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                _errorMessage ?? '',
+                style: TextStyle(color: Colors.red),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyWidget4()),
+                  );
+                },
+                child: Text("Register"),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
