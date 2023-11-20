@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ewallet/widgets/dispatch.dart';
 import 'package:ewallet/widgets/home.dart';
-import 'package:ewallet/widgets/makepayment.dart';
-import 'package:ewallet/widgets/rechargehistory.dart';
 import 'package:flutter/material.dart';
 
 
-class MyWidgetTransaction extends StatelessWidget {
+class MyWidgetStoreTransaction extends StatelessWidget {
   final String username;
-   MyWidgetTransaction({required this.username});
+   MyWidgetStoreTransaction({required this.username});
   final CollectionReference transaction_details = FirebaseFirestore.instance.collection('transaction_details');
   @override
   Widget build(BuildContext context) {
@@ -138,33 +137,30 @@ class MyWidgetTransaction extends StatelessWidget {
         ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.deepPurple,
-        currentIndex: 2,
+        currentIndex: 1,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home,color: Colors.deepPurple),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt,color: Colors.deepPurple),
-            label: 'Recharge',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.compare_arrows,color: Colors.deepPurple),
             label: 'Transaction',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.payment,color: Colors.deepPurple),
-            label: 'Make Payment',
-          ),
+            icon: Icon(Icons.dashboard,color: Colors.deepPurple),
+            label: 'Dispatch',
+          )
         ],
         onTap: (int index) {
           if (index == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetHome(username: username)));
           } else if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetRecharge(username: username)));
-          } else if (index == 3) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetMakePayment(username: username)));
-          }
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetStoreTransaction(username: username)));
+          } 
+          else if (index == 2) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetDispatch(username: username)));
+          } 
         },
       ),
     );
