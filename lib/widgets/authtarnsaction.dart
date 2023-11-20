@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ewallet/widgets/home.dart';
-import 'package:ewallet/widgets/makepayment.dart';
-import 'package:ewallet/widgets/rechargehistory.dart';
+import 'package:ewallet/widgets/AuthDispatchHistory.dart';
+import 'package:ewallet/widgets/AuthRechargehistory.dart';
+import 'package:ewallet/widgets/authhome.dart';
+import 'package:ewallet/widgets/authtarnsactionPert.dart';
 import 'package:flutter/material.dart';
 
 
-class MyWidgetTransaction extends StatelessWidget {
+class MyWidgetAuthTransaction extends StatelessWidget {
   final String username;
-   MyWidgetTransaction({required this.username});
+   MyWidgetAuthTransaction({required this.username});
   final CollectionReference transaction_details = FirebaseFirestore.instance.collection('transaction_details');
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class MyWidgetTransaction extends StatelessWidget {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index){
                   final DocumentSnapshot trans_snap = snapshot.data.docs[index];
-                  if(username == trans_snap['sender_id']){
+                  
                     return Padding(
               padding: EdgeInsets.all(10.0),
               child: Card(
@@ -51,7 +52,15 @@ class MyWidgetTransaction extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.all(5.0),
-                                  child: Text("Amount " + trans_snap['amount'].toString()),
+                                  child: Text("Amount : " + trans_snap['amount'].toString()),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text("Sender : " + trans_snap['sender_id']),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(5.0),
+                                  child: Text("Reciever : " + trans_snap['reciever_id']),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.all(5.0),
@@ -61,15 +70,6 @@ class MyWidgetTransaction extends StatelessWidget {
                             )
                           ],
                         ),
-                        trailing: Column(
-                          children: [
-                            
-                            CircleAvatar(),
-                            Text(trans_snap['reciever_id']),
-                            
-                            
-
-                        ]),
                       ),
                     ),
                   ] ,
@@ -77,58 +77,7 @@ class MyWidgetTransaction extends StatelessWidget {
               ),
             );
 
-            }
-            else if(username == trans_snap['reciever_id']){
-                    return Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Card(
-                shadowColor: Colors.amber,
-                color: Colors.blue,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: ListTile(
-                        textColor: Colors.white,
-                        iconColor: Colors.white,
-                        leading: Icon(Icons.east),
-                        title: Column(
-                          children: [
-                            Column(
-                              
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text("Amount " + trans_snap['amount'].toString()),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(5.0),
-                                  child: Text(trans_snap['time_day'].toString()),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        trailing: Column(
-                          children: [
-                            
-                            CircleAvatar(),
-                            Text(trans_snap['sender_id']),
-                            
-                            
-
-                        ]),
-                      ),
-                    ),
-                  ] ,
-                ),
-              ),
-            );
-
-            }
-            else{
-              return Container();
-            }
+            
                   
                 },
                 );
@@ -138,32 +87,61 @@ class MyWidgetTransaction extends StatelessWidget {
         ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.deepPurple,
-        currentIndex: 2,
+        currentIndex: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home,color: Colors.deepPurple),
+            icon: Icon(Icons.home, color: Colors.deepPurple),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt,color: Colors.deepPurple),
-            label: 'Recharge',
+            icon: Icon(Icons.receipt, color: Colors.deepPurple),
+            label: 'Recharge History',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.compare_arrows,color: Colors.deepPurple),
-            label: 'Transaction',
+            icon: Icon(Icons.compare_arrows, color: Colors.deepPurple),
+            label: 'Transaction History',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.payment,color: Colors.deepPurple),
-            label: 'Make Payment',
+            icon: Icon(Icons.compare_arrows, color: Colors.deepPurple),
+            label: 'Personal Transaction',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.payment, color: Colors.deepPurple),
+            label: 'Dispatch History',
           ),
         ],
         onTap: (int index) {
           if (index == 0) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetHome(username: username)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyWidgetAuthHome(username: username)));
           } else if (index == 1) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetRecharge(username: username)));
-          } else if (index == 3) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetMakePayment(username: username)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetAuthRechargeHistory(username: username)));
+          } else if (index == 2) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetAuthTransaction(username: username)));
+          }
+          else if (index == 3) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetAuthTransactionPer(username: username)));
+          }
+          else if (index == 4) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetDispatchHistory(username: username)));
           }
         },
       ),

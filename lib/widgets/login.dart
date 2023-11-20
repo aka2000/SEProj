@@ -1,4 +1,4 @@
-import 'package:ewallet/widgets/home.dart';
+import 'package:ewallet/widgets/intermediate.dart';
 import 'package:ewallet/widgets/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,6 @@ class MyWidget2 extends StatelessWidget {
         title: Text("E-Wallet"),
         backgroundColor: Colors.deepPurple,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Center(
@@ -51,13 +50,16 @@ class MyWidget2 extends StatelessWidget {
                       email: usernameController.text,
                       password: passwordController.text,
                     );
-                    // Navigate to the home page if the user was successfully signed in.
+                    
+                    // Navigate to the intermediate widget with the username
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyWidgetHome()),
+                      MaterialPageRoute(
+                        builder: (context) => MyWidgetIntermediate(username: usernameController.text),
+                      ),
                     );
+
                   } on FirebaseAuthException catch (e) {
-                    // Show an error message to the user if the sign in failed.
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(e.message ?? '')),
                     );

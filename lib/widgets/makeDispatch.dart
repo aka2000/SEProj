@@ -5,16 +5,16 @@ import 'package:ewallet/widgets/rechargehistory.dart';
 import 'package:ewallet/widgets/tarnsaction.dart';
 import 'package:flutter/material.dart';
 
-class MyWidgetMakePayment extends StatefulWidget {
+class MyWidgetMakeRecharge extends StatefulWidget {
   final String username;
 
-  MyWidgetMakePayment({required this.username});
+  MyWidgetMakeRecharge({required this.username});
 
   @override
-  _MyWidgetMakePaymentState createState() => _MyWidgetMakePaymentState();
+  _MyWidgetMakeRechargeState createState() => _MyWidgetMakeRechargeState();
 }
 
-class _MyWidgetMakePaymentState extends State<MyWidgetMakePayment> {
+class _MyWidgetMakeRechargeState extends State<MyWidgetMakeRecharge> {
   final TextEditingController _emailController = TextEditingController();
   final CollectionReference user_details =
       FirebaseFirestore.instance.collection('user_details');

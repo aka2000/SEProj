@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ewallet/widgets/makepayment.dart';
-import 'package:ewallet/widgets/rechargehistory.dart';
-import 'package:ewallet/widgets/tarnsaction.dart';
+import 'package:ewallet/widgets/AuthRechargehistory.dart';
+import 'package:ewallet/widgets/AuthdispatchHistory.dart';
+import 'package:ewallet/widgets/authtarnsaction.dart';
+import 'package:ewallet/widgets/authtarnsactionPert.dart';
 import 'package:flutter/material.dart';
 
-class MyWidgetHome extends StatelessWidget {
+
+class MyWidgetAuthHome extends StatelessWidget {
   final String username;
 
-  MyWidgetHome({required this.username});
+  MyWidgetAuthHome({required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class MyWidgetHome extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.deepPurple,
-        currentIndex: 1,
+        currentIndex: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home, color: Colors.deepPurple),
@@ -64,35 +66,53 @@ class MyWidgetHome extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt, color: Colors.deepPurple),
-            label: 'Recharge',
+            label: 'Recharge History',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.compare_arrows, color: Colors.deepPurple),
-            label: 'Transaction',
+            label: 'Transaction History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.compare_arrows, color: Colors.deepPurple),
+            label: 'Personal Transaction',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.payment, color: Colors.deepPurple),
-            label: 'Make Payment',
+            label: 'Dispatch History',
           ),
         ],
         onTap: (int index) {
-          if (index == 1) {
+          if (index == 0) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => MyWidgetRecharge(username: username)));
+                    builder: (context) => MyWidgetAuthHome(username: username)));
+          } else if (index == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetAuthRechargeHistory(username: username)));
           } else if (index == 2) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        MyWidgetTransaction(username: username)));
-          } else if (index == 3) {
+                        MyWidgetAuthTransaction(username: username)));
+          }
+          else if (index == 3) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        MyWidgetMakePayment(username: username)));
+                        MyWidgetAuthTransactionPer(username: username)));
+          }
+          else if (index == 4) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyWidgetDispatchHistory(username: username)));
           }
         },
       ),

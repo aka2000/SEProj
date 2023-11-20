@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ewallet/widgets/makepayment.dart';
-import 'package:ewallet/widgets/rechargehistory.dart';
-import 'package:ewallet/widgets/tarnsaction.dart';
+import 'package:ewallet/widgets/dispatch.dart';
+import 'package:ewallet/widgets/store_tarnsaction.dart';
 import 'package:flutter/material.dart';
 
-class MyWidgetHome extends StatelessWidget {
+class MyWidgetStoreHome extends StatelessWidget {
   final String username;
 
-  MyWidgetHome({required this.username});
+  MyWidgetStoreHome({required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class MyWidgetHome extends StatelessWidget {
         FirebaseFirestore.instance.collection('user_details');
     return Scaffold(
       appBar: AppBar(
-        title: const Text("E-Wallet"),
+        title: Text(username),
         backgroundColor: Colors.deepPurple,
         leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
         actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))],
@@ -59,41 +58,27 @@ class MyWidgetHome extends StatelessWidget {
         currentIndex: 1,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.deepPurple),
+            icon: Icon(Icons.home,color: Colors.deepPurple),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt, color: Colors.deepPurple),
-            label: 'Recharge',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.compare_arrows, color: Colors.deepPurple),
+            icon: Icon(Icons.compare_arrows,color: Colors.deepPurple),
             label: 'Transaction',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.payment, color: Colors.deepPurple),
-            label: 'Make Payment',
-          ),
+            icon: Icon(Icons.dashboard,color: Colors.deepPurple),
+            label: 'Dispatch',
+          )
         ],
         onTap: (int index) {
-          if (index == 1) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyWidgetRecharge(username: username)));
-          } else if (index == 2) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MyWidgetTransaction(username: username)));
-          } else if (index == 3) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MyWidgetMakePayment(username: username)));
-          }
+          if (index == 0) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetStoreHome(username: username)));
+          } else if (index == 1) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetStoreTransaction(username: username)));
+          } 
+          else if (index == 2) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MyWidgetDispatch(username: username)));
+          } 
         },
       ),
     );
